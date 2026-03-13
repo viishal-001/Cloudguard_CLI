@@ -1,0 +1,62 @@
+# CloudGuard Sandbox — Intentionally Misconfigured Test Environment
+# WARNING: This creates INSECURE resources for testing purposes only!
+# Run cleanup.sh immediately after testing.
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudGuard test sandbox with intentional misconfigurations'
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: cloudguard-sandbox
+
+Resources:
+  # Misconfigured S3 bucket — no encryption, no versioning
+  InsecureBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${ProjectName}-insecure-${AWS::AccountId}'
+      # Intentionally: no encryption, no versioning, no logging
+
+  # Security Group with SSH open to world
+  OpenSSHSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'CloudGuard test - SSH open to world'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  # Unencrypted EBS volume
+  UnencryptedVolume:
+    Type: AWS::EC2::Volume
+    Properties:
+      AvailabilityZone: !Select [0, !GetAZs '']
+      Size: 1
+      Encrypted: false
+      Tags:
+        - Key: Name
+          Value: !Sub '${ProjectName}-unencrypted'
+
+  # DynamoDB table without encryption
+  InsecureTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub '${ProjectName}-insecure-table'
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+Outputs:
+  BucketName:
+    Value: !Ref InsecureBucket
+  SecurityGroupId:
+    Value: !Ref OpenSSHSecurityGroup
+  VolumeId:
+    Value: !Ref UnencryptedVolume

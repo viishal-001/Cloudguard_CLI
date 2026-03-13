@@ -1,0 +1,25 @@
+name: Feature Request
+description: Suggest an idea for this project
+title: "[FEATURE] "
+labels: ["enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check `cloudguard_prd.md` and `roadmap.md` first to see if this feature is already planned!
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is this feature necessary? What problem does it solve?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: How should this feature behave? What does "done" look like?
+    validations:
+      required: true

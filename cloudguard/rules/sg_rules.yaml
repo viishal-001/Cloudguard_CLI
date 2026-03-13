@@ -1,0 +1,37 @@
+# Security Groups Rules
+rules:
+  - id: sg-unrestricted-ingress
+    description: "Security group allows unrestricted ingress (0.0.0.0/0)"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L"
+    cis_mapping: "CIS 5.2"
+    mitigation: |
+      Restrict security group ingress rules:
+      aws ec2 revoke-security-group-ingress --group-id <sg-id> --protocol tcp --port <port> --cidr 0.0.0.0/0
+      Replace with specific CIDR blocks or security group references.
+
+  - id: sg-ssh-open
+    description: "Security group allows SSH (port 22) from 0.0.0.0/0"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N"
+    cis_mapping: "CIS 5.2"
+    mitigation: |
+      Restrict SSH access to specific IPs:
+      aws ec2 revoke-security-group-ingress --group-id <sg-id> --protocol tcp --port 22 --cidr 0.0.0.0/0
+      aws ec2 authorize-security-group-ingress --group-id <sg-id> --protocol tcp --port 22 --cidr <your-ip>/32
+
+  - id: sg-rdp-open
+    description: "Security group allows RDP (port 3389) from 0.0.0.0/0"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N"
+    cis_mapping: "CIS 5.3"
+    mitigation: |
+      Restrict RDP access to specific IPs or use AWS Systems Manager.
+
+  - id: sg-unrestricted-egress
+    description: "Security group allows all outbound traffic"
+    severity: LOW
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Restrict egress to required destinations and ports only.

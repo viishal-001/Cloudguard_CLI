@@ -1,0 +1,19 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowCloudGuardAssumeRole",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::TRUSTED_ACCOUNT_ID:root"
+            },
+            "Action": "sts:AssumeRole",
+            "Condition": {
+                "StringEquals": {
+                    "sts:ExternalId": "EXTERNAL_ID_HERE"
+                }
+            }
+        }
+    ],
+    "Comment": "Trust policy for CloudGuard cross-account scanning. Replace TRUSTED_ACCOUNT_ID with the account running CloudGuard. Replace EXTERNAL_ID_HERE with a unique secret shared between accounts. Attach cloudguard-readonly-policy.json as the role's permissions."
+}

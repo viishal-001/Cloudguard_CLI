@@ -1,0 +1,177 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "CloudGuardIdentity",
+            "Effect": "Allow",
+            "Action": [
+                "sts:GetCallerIdentity"
+            ],
+            "Resource": "*",
+            "Comment": "Required: Pre-scan identity verification (prompt spec §C.1)"
+        },
+        {
+            "Sid": "CloudGuardIAMReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetAccountSummary",
+                "iam:GetAccountPasswordPolicy",
+                "iam:ListUsers",
+                "iam:ListMFADevices",
+                "iam:GetLoginProfile",
+                "iam:ListPolicies",
+                "iam:GetPolicyVersion",
+                "iam:ListUserPolicies",
+                "iam:GenerateCredentialReport",
+                "iam:GetCredentialReport"
+            ],
+            "Resource": "*",
+            "Comment": "IAM: Account summary, user MFA, password policy, credential age, inline policies (MVP §6 svc #1)"
+        },
+        {
+            "Sid": "CloudGuardS3ReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListAllMyBuckets",
+                "s3:GetBucketPublicAccessBlock",
+                "s3:GetBucketEncryption",
+                "s3:GetBucketVersioning",
+                "s3:GetBucketLogging",
+                "s3:GetBucketPolicy",
+                "s3:GetBucketAcl"
+            ],
+            "Resource": "*",
+            "Comment": "S3: Bucket configs, public access, encryption, versioning, logging, policy (MVP §6 svc #2). NOTE: s3:GetObject intentionally excluded per prompt spec §D"
+        },
+        {
+            "Sid": "CloudGuardEC2ReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeInstances",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DescribeVpcs",
+                "ec2:DescribeFlowLogs",
+                "ec2:DescribeVolumes",
+                "ec2:DescribeSnapshots",
+                "ec2:DescribeSnapshotAttribute",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeNetworkAcls"
+            ],
+            "Resource": "*",
+            "Comment": "EC2/SG/VPC/EBS: Instance metadata, security groups, VPCs, flow logs, EBS encryption (MVP §6 svcs #3-6,11)"
+        },
+        {
+            "Sid": "CloudGuardRDSReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "rds:DescribeDBInstances",
+                "rds:DescribeDBClusters"
+            ],
+            "Resource": "*",
+            "Comment": "RDS: Public access, encryption, backups, Multi-AZ (MVP §6 svc #5)"
+        },
+        {
+            "Sid": "CloudGuardMonitoringReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "cloudtrail:DescribeTrails",
+                "cloudtrail:GetTrailStatus",
+                "logs:DescribeLogGroups",
+                "cloudwatch:DescribeAlarms"
+            ],
+            "Resource": "*",
+            "Comment": "CloudTrail/CloudWatch: Trail config, log validation, KMS, log retention (MVP §6 svcs #7-8)"
+        },
+        {
+            "Sid": "CloudGuardServerlessReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "lambda:ListFunctions",
+                "lambda:GetPolicy",
+                "lambda:GetFunctionConfiguration",
+                "apigateway:GET"
+            ],
+            "Resource": "*",
+            "Comment": "Lambda/API Gateway: Resource policies, DLQ, runtime, auth config (MVP §6 svcs #9-10)"
+        },
+        {
+            "Sid": "CloudGuardContainerReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "eks:ListClusters",
+                "eks:DescribeCluster",
+                "ecs:ListTaskDefinitions",
+                "ecs:DescribeTaskDefinition"
+            ],
+            "Resource": "*",
+            "Comment": "EKS/ECS: Public endpoints, logging, secrets encryption, task roles, privileged containers (MVP §6 svcs #12-13)"
+        },
+        {
+            "Sid": "CloudGuardNetworkReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "elasticloadbalancing:DescribeLoadBalancers",
+                "elasticloadbalancing:DescribeLoadBalancerAttributes",
+                "elasticloadbalancing:DescribeListeners",
+                "elasticloadbalancing:DescribeTargetGroups"
+            ],
+            "Resource": "*",
+            "Comment": "ELB: SSL/HTTPS, access logging, deletion protection (MVP §6 svc #14)"
+        },
+        {
+            "Sid": "CloudGuardDataReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:ListTables",
+                "dynamodb:DescribeTable",
+                "dynamodb:DescribeContinuousBackups"
+            ],
+            "Resource": "*",
+            "Comment": "DynamoDB: SSE encryption, point-in-time recovery (MVP §6 svc #15)"
+        },
+        {
+            "Sid": "CloudGuardCryptoReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "kms:ListKeys",
+                "kms:DescribeKey",
+                "kms:GetKeyRotationStatus",
+                "kms:GetKeyPolicy"
+            ],
+            "Resource": "*",
+            "Comment": "KMS: Key rotation, key policy exposure (MVP §6 svc #16). NOTE: kms:Decrypt intentionally excluded per prompt spec §D"
+        },
+        {
+            "Sid": "CloudGuardSecretsReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "secretsmanager:ListSecrets",
+                "secretsmanager:DescribeSecret"
+            ],
+            "Resource": "*",
+            "Comment": "Secrets Manager: Rotation config, usage (MVP §6 svc #17). NOTE: secretsmanager:GetSecretValue intentionally excluded per prompt spec §D"
+        },
+        {
+            "Sid": "CloudGuardMessagingReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "sns:ListTopics",
+                "sns:GetTopicAttributes",
+                "sqs:ListQueues",
+                "sqs:GetQueueAttributes"
+            ],
+            "Resource": "*",
+            "Comment": "SNS/SQS: Public access policies, encryption (MVP §6 svcs #18-19)"
+        },
+        {
+            "Sid": "CloudGuardConfigReadOnly",
+            "Effect": "Allow",
+            "Action": [
+                "config:DescribeConfigurationRecorders",
+                "config:DescribeConfigurationRecorderStatus"
+            ],
+            "Resource": "*",
+            "Comment": "AWS Config: Recorder status, global resource recording (MVP §6 svc #20)"
+        }
+    ]
+}

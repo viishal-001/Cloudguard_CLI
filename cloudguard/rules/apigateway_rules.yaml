@@ -1,0 +1,25 @@
+# API Gateway Security Rules
+rules:
+  - id: apigateway-no-auth
+    description: "API Gateway endpoint has no authorization configured"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Add authorization: Configure API Key, IAM, Cognito, or Lambda authorizer on the API Gateway method.
+
+  - id: apigateway-no-logging
+    description: "API Gateway does not have execution logging enabled"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Enable execution logging in the stage settings of the API Gateway.
+
+  - id: apigateway-no-waf
+    description: "API Gateway is not associated with a WAF WebACL"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Associate a WAF WebACL with the API Gateway stage.

@@ -1,0 +1,27 @@
+# EKS Security Rules
+rules:
+  - id: eks-public-endpoint
+    description: "EKS cluster has a public API endpoint"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L"
+    cis_mapping: ""
+    mitigation: |
+      Disable public endpoint or restrict access:
+      aws eks update-cluster-config --name <cluster> --resources-vpc-config endpointPublicAccess=false,endpointPrivateAccess=true
+
+  - id: eks-no-logging
+    description: "EKS cluster does not have control plane logging enabled"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Enable cluster logging:
+      aws eks update-cluster-config --name <cluster> --logging '{"clusterLogging":[{"types":["api","audit","authenticator","controllerManager","scheduler"],"enabled":true}]}'
+
+  - id: eks-secrets-not-encrypted
+    description: "EKS cluster does not have secrets encryption configured"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Enable envelope encryption for Kubernetes secrets using a KMS key.

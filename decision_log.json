@@ -1,0 +1,68 @@
+{
+    "decisions": [
+        {
+            "id": "D001",
+            "date": "2026-03-13",
+            "title": "Internal CVSS calculator over external library",
+            "rationale": "MVP §5 suggests the 'cvss' library, but an internal implementation avoids a heavy dependency and ensures deterministic scoring. Per @vulnerability-scanner CVSS+Context approach.",
+            "alternatives": ["Use python-cvss library", "Use FIRST CVSS calculator API"],
+            "status": "accepted"
+        },
+        {
+            "id": "D002",
+            "date": "2026-03-13",
+            "title": "YAML rules over database-stored rules",
+            "rationale": "PRD §5 specifies 'Security rules stored as configuration files'. YAML is human-readable, git-trackable, and easy to extend. Per @vulnerability-scanner scanning methodology.",
+            "alternatives": ["SQLite rule storage", "JSON rules"],
+            "status": "accepted"
+        },
+        {
+            "id": "D003",
+            "date": "2026-03-13",
+            "title": "Decorator-based scanner registry",
+            "rationale": "MVP §11 architecture requires modular scanners. @register_scanner decorator enables plug-and-play without manual configuration. Inspired by @security-auditor defense-in-depth principle.",
+            "alternatives": ["Manual scanner list", "Entry point discovery"],
+            "status": "accepted"
+        },
+        {
+            "id": "D004",
+            "date": "2026-03-13",
+            "title": "Pre-scan identity verification with interactive confirmation",
+            "rationale": "Prompt spec §C.1 mandates STS identity display and user confirmation. Per @security-auditor zero-trust principle and PRD §9 security requirements.",
+            "alternatives": ["Silent identity check", "Log-only identity"],
+            "status": "accepted"
+        },
+        {
+            "id": "D005",
+            "date": "2026-03-13",
+            "title": "Permission pre-checks using minimal safe API calls",
+            "rationale": "Prompt spec §C.2 requires detecting AccessDenied before scanning. Maps each service to a single lightweight read-only API call. Per @security-auditor fail-secure principle.",
+            "alternatives": ["IAM policy simulation API", "Skip permission checks"],
+            "status": "accepted"
+        },
+        {
+            "id": "D006",
+            "date": "2026-03-13",
+            "title": "Explicit exclusion of s3:GetObject, kms:Decrypt, secretsmanager:GetSecretValue",
+            "rationale": "Prompt spec §D mandates excluding these by default. CloudGuard checks metadata only, not data contents. Per @security-auditor least privilege principle.",
+            "alternatives": ["Include with audit logging", "Include with flag gate"],
+            "status": "accepted"
+        },
+        {
+            "id": "D007",
+            "date": "2026-03-13",
+            "title": "PBKDF2 + AES-GCM for credential caching",
+            "rationale": "Prompt spec §E requires strong KDF with safe iterations and AES-GCM. 600k PBKDF2 iterations matches OWASP recommendation. Entirely opt-in per PRD §6 no-credential-storage requirement.",
+            "alternatives": ["Argon2id", "No caching at all"],
+            "status": "accepted"
+        },
+        {
+            "id": "D008",
+            "date": "2026-03-13",
+            "title": "ThreadPoolExecutor over asyncio for concurrency",
+            "rationale": "boto3 is not async-native. ThreadPoolExecutor with configurable concurrency (default 4) provides safe concurrent scanning without async complexity. Per prompt spec §8.",
+            "alternatives": ["asyncio with aioboto3", "Sequential scanning only"],
+            "status": "accepted"
+        }
+    ]
+}

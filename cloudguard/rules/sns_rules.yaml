@@ -1,0 +1,18 @@
+# SNS Security Rules
+rules:
+  - id: sns-public-access
+    description: "SNS topic allows public publishing or subscribing"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:H/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Restrict the SNS topic policy. Remove Principal: "*" or add source conditions.
+
+  - id: sns-no-encryption
+    description: "SNS topic does not have server-side encryption enabled"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Enable encryption:
+      aws sns set-topic-attributes --topic-arn <arn> --attribute-name KmsMasterKeyId --attribute-value <key-id>

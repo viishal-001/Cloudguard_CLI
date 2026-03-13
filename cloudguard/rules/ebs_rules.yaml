@@ -1,0 +1,19 @@
+# EBS Security Rules
+rules:
+  - id: ebs-unencrypted
+    description: "EBS volume is not encrypted"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+    cis_mapping: "CIS 2.2.1"
+    mitigation: |
+      Enable EBS encryption by default:
+      aws ec2 enable-ebs-encryption-by-default
+
+  - id: ebs-snapshot-public
+    description: "EBS snapshot is publicly shared"
+    severity: CRITICAL
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Remove public access from snapshot:
+      aws ec2 modify-snapshot-attribute --snapshot-id <id> --attribute createVolumePermission --operation-type remove --group-names all

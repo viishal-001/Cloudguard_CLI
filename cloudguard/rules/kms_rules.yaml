@@ -1,0 +1,18 @@
+# KMS Security Rules
+rules:
+  - id: kms-key-rotation-disabled
+    description: "KMS key does not have automatic rotation enabled"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:H/I:N/A:N"
+    cis_mapping: "CIS 3.8"
+    mitigation: |
+      Enable automatic key rotation:
+      aws kms enable-key-rotation --key-id <key-id>
+
+  - id: kms-key-exposed
+    description: "KMS key policy allows public access"
+    severity: CRITICAL
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Review and restrict the KMS key policy. Remove Principal: "*" or add conditions.

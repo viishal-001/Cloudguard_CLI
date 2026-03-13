@@ -1,0 +1,27 @@
+# ELB Security Rules
+rules:
+  - id: elb-no-ssl
+    description: "Elastic Load Balancer listener does not use HTTPS/SSL"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Configure HTTPS listener with a valid ACM certificate on the load balancer.
+
+  - id: elb-no-access-logging
+    description: "Elastic Load Balancer does not have access logging enabled"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Enable access logging:
+      aws elbv2 modify-load-balancer-attributes --load-balancer-arn <arn> --attributes Key=access_logs.s3.enabled,Value=true Key=access_logs.s3.bucket,Value=<bucket>
+
+  - id: elb-deletion-protection-disabled
+    description: "Elastic Load Balancer does not have deletion protection enabled"
+    severity: LOW
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:N/I:N/A:H"
+    cis_mapping: ""
+    mitigation: |
+      Enable deletion protection:
+      aws elbv2 modify-load-balancer-attributes --load-balancer-arn <arn> --attributes Key=deletion_protection.enabled,Value=true

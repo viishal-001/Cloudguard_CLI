@@ -1,0 +1,9 @@
+# Repo owners
+* @viishal-001
+
+# Subsystem owners
+/cloudguard/scanners/ @viishal-001
+/cloudguard/rules/ @viishal-001
+/cloudguard/core/aws_auth.py @viishal-001
+/.github/ @viishal-001
+/docs/ @viishal-001

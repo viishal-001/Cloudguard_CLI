@@ -1,0 +1,20 @@
+# AWS Config Security Rules
+rules:
+  - id: config-not-enabled
+    description: "AWS Config is not enabled in this region"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
+    cis_mapping: "CIS 3.5"
+    mitigation: |
+      Enable AWS Config:
+      aws configservice put-configuration-recorder --configuration-recorder name=default,roleARN=<role-arn>
+      aws configservice put-delivery-channel --delivery-channel name=default,s3BucketName=<bucket>
+      aws configservice start-configuration-recorder --configuration-recorder-name default
+
+  - id: config-no-global-resources
+    description: "AWS Config does not record global resources (e.g., IAM)"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
+    cis_mapping: "CIS 3.5"
+    mitigation: |
+      Enable global resource recording in AWS Config settings.

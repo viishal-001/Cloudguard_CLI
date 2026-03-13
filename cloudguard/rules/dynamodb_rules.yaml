@@ -1,0 +1,18 @@
+# DynamoDB Security Rules
+rules:
+  - id: dynamodb-no-encryption
+    description: "DynamoDB table does not use KMS encryption"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Enable KMS encryption on the DynamoDB table. Use customer-managed KMS keys for sensitive data.
+
+  - id: dynamodb-no-pitr
+    description: "DynamoDB table does not have Point-in-Time Recovery enabled"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:H"
+    cis_mapping: ""
+    mitigation: |
+      Enable PITR:
+      aws dynamodb update-continuous-backups --table-name <table> --point-in-time-recovery-specification PointInTimeRecoveryEnabled=true

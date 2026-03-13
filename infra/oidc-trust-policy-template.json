@@ -1,0 +1,22 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowGitHubOIDCAssumeRole",
+            "Effect": "Allow",
+            "Principal": {
+                "Federated": "arn:aws:iam::TARGET_ACCOUNT_ID:oidc-provider/token.actions.githubusercontent.com"
+            },
+            "Action": "sts:AssumeRoleWithWebIdentity",
+            "Condition": {
+                "StringEquals": {
+                    "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+                },
+                "StringLike": {
+                    "token.actions.githubusercontent.com:sub": "repo:YOUR_ORG/YOUR_REPO:ref:refs/heads/main"
+                }
+            }
+        }
+    ],
+    "Comment": "OIDC trust policy for GitHub Actions. Replace TARGET_ACCOUNT_ID, YOUR_ORG, and YOUR_REPO. The 'sub' condition restricts assumption to the main branch only. See .github/workflows/scan.yml for usage."
+}

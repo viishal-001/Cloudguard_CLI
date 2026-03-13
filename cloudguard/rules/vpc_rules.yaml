@@ -1,0 +1,18 @@
+# VPC Security Rules
+rules:
+  - id: vpc-flow-logs-disabled
+    description: "VPC does not have flow logs enabled"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N"
+    cis_mapping: "CIS 3.9"
+    mitigation: |
+      Enable VPC flow logs:
+      aws ec2 create-flow-logs --resource-type VPC --resource-ids <vpc-id> --traffic-type ALL --log-destination-type cloud-watch-logs --log-group-name <group>
+
+  - id: vpc-default-sg-in-use
+    description: "Default VPC security group has rules allowing traffic"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:N"
+    cis_mapping: "CIS 5.4"
+    mitigation: |
+      Remove all inbound/outbound rules from the default security group.

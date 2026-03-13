@@ -1,0 +1,25 @@
+# ECS Security Rules
+rules:
+  - id: ecs-task-role-missing
+    description: "ECS task definition does not have a task role assigned"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:L/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Assign a least-privilege task role to ECS task definitions.
+
+  - id: ecs-no-logging
+    description: "ECS task definition does not have logging configured"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Configure awslogs log driver in the container definition.
+
+  - id: ecs-privileged-container
+    description: "ECS task definition runs a container in privileged mode"
+    severity: CRITICAL
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H"
+    cis_mapping: ""
+    mitigation: |
+      Remove privileged mode from container definition. Use specific Linux capabilities instead.

@@ -1,0 +1,29 @@
+# CloudTrail Security Rules
+rules:
+  - id: cloudtrail-disabled
+    description: "CloudTrail is not enabled in this region"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N"
+    cis_mapping: "CIS 3.1"
+    mitigation: |
+      Enable CloudTrail:
+      aws cloudtrail create-trail --name <name> --s3-bucket-name <bucket> --is-multi-region-trail
+      aws cloudtrail start-logging --name <name>
+
+  - id: cloudtrail-no-log-validation
+    description: "CloudTrail log file validation is not enabled"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:H/A:N"
+    cis_mapping: "CIS 3.2"
+    mitigation: |
+      Enable log file validation:
+      aws cloudtrail update-trail --name <name> --enable-log-file-validation
+
+  - id: cloudtrail-not-encrypted
+    description: "CloudTrail logs are not encrypted with KMS"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N"
+    cis_mapping: "CIS 3.7"
+    mitigation: |
+      Enable KMS encryption for CloudTrail:
+      aws cloudtrail update-trail --name <name> --kms-key-id <key-arn>

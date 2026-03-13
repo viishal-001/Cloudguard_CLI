@@ -1,0 +1,21 @@
+id,title,component,priority,status,description
+1,Expand IAM rules to 15+,rules,high,backlog,Add user access key age check and credential report analysis
+2,Add multi-region scanning,cli,high,backlog,Loop over --regions and merge results
+3,Encrypted SQLite history,reporting,medium,backlog,Opt-in scan history with AES-GCM encryption
+4,Scan diff comparison,reporting,medium,backlog,Compare current scan vs previous basline
+5,CloudFormation checker,scanners,medium,backlog,Check CFN templates for insecure defaults
+6,Cost estimation overlay,reporting,low,backlog,Show estimated cost impact of misconfigurations
+7,PyInstaller binaries,packaging,low,backlog,Cross-platform standalone executables
+8,SNS/SQS DLQ analysis,scanners,medium,backlog,Check DLQ configuration for messaging services
+9,Custom rule loading,rules,medium,backlog,Allow users to add custom YAML rules from external paths
+10,Terraform state scanning,scanners,low,backlog,Parse tfstate for misconfiguration detection
+11,NIST mapping for rules,rules,medium,backlog,Add NIST CSF references to all rules
+12,CIS Level 2 controls,rules,high,backlog,Implement CIS Level 2 benchmarks for all services
+13,Lambda VPC config check,scanners,medium,backlog,Verify Lambda functions use VPC when accessing resources
+14,API Gateway WAF check,scanners,medium,backlog,Check WAF web ACL association
+15,EKS node group security,scanners,medium,backlog,Check node group AMI and launch template security
+16,FastAPI scan endpoints,api,medium,backlog,REST API for triggering and retrieving scans
+17,React web dashboard,frontend,low,backlog,Dashboard for viewing scan results with charts
+18,Rate limit config flag,cli,low,backlog,Allow users to tune retry/backoff parameters
+19,SARIF GitHub integration,ci,medium,backlog,Upload SARIF results to GitHub Code Scanning
+20,Bandit pre-commit hook,ci,medium,backlog,Add bandit to pre-commit config

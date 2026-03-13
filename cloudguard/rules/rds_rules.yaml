@@ -1,0 +1,35 @@
+# RDS Security Rules
+rules:
+  - id: rds-public-access
+    description: "RDS instance is publicly accessible"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N"
+    cis_mapping: "CIS 2.3.1"
+    mitigation: |
+      Disable public access:
+      aws rds modify-db-instance --db-instance-identifier <id> --no-publicly-accessible
+
+  - id: rds-no-encryption
+    description: "RDS instance does not have encryption at rest enabled"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+    cis_mapping: "CIS 2.3.2"
+    mitigation: |
+      Create encrypted snapshot and restore: RDS encryption must be enabled at creation.
+
+  - id: rds-no-multi-az
+    description: "RDS instance does not have Multi-AZ enabled"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    cis_mapping: ""
+    mitigation: |
+      Enable Multi-AZ: aws rds modify-db-instance --db-instance-identifier <id> --multi-az
+
+  - id: rds-no-backup
+    description: "RDS instance has automated backups disabled"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:H"
+    cis_mapping: ""
+    mitigation: |
+      Enable automated backups:
+      aws rds modify-db-instance --db-instance-identifier <id> --backup-retention-period 7

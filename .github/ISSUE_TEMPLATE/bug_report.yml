@@ -1,0 +1,41 @@
+name: Bug Report
+description: Create a report to help us improve
+title: "[BUG] "
+labels: ["bug"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please review existing issues before submitting.
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear and concise description of what the bug is.
+      placeholder: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Exact CLI commands run (redact account numbers or ARNs).
+      placeholder: |
+        1. Run `cloudguard scan ...`
+        2. Expected output ...
+        3. Actual output ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python version, CloudGuard version
+      placeholder: |
+        - OS: Windows 11
+        - Python: 3.11
+        - CloudGuard v0.1.0
+    validations:
+      required: true

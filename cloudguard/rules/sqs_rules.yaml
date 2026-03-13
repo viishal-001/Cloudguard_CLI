@@ -1,0 +1,18 @@
+# SQS Security Rules
+rules:
+  - id: sqs-public-access
+    description: "SQS queue allows public access"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Restrict the SQS queue policy. Remove Principal: "*" or add source conditions.
+
+  - id: sqs-no-encryption
+    description: "SQS queue does not have server-side encryption enabled"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Enable SQS encryption:
+      aws sqs set-queue-attributes --queue-url <url> --attributes KmsMasterKeyId=<key-id>

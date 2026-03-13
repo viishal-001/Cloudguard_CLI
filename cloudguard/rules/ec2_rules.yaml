@@ -1,0 +1,40 @@
+# EC2 Security Rules
+rules:
+  - id: ec2-public-ip
+    description: "EC2 instance has a public IP address"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Remove public IP or place behind a load balancer:
+      1. Launch new instance without public IP: --no-associate-public-ip-address
+      2. Use NAT Gateway for outbound internet access
+      3. Use AWS Systems Manager Session Manager for SSH access
+
+  - id: ec2-imdsv1-enabled
+    description: "EC2 instance allows IMDSv1 (metadata service v1)"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+    cis_mapping: "CIS 5.6"
+    mitigation: |
+      Enforce IMDSv2:
+      aws ec2 modify-instance-metadata-options --instance-id <id> --http-tokens required --http-endpoint enabled
+
+  - id: ec2-no-monitoring
+    description: "EC2 instance does not have detailed monitoring enabled"
+    severity: LOW
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:L"
+    cis_mapping: ""
+    mitigation: |
+      Enable detailed monitoring:
+      aws ec2 monitor-instances --instance-ids <id>
+
+  - id: ec2-unencrypted-volume
+    description: "EC2 instance has unencrypted EBS volumes attached"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+    cis_mapping: "CIS 2.2.1"
+    mitigation: |
+      Enable EBS encryption by default:
+      aws ec2 enable-ebs-encryption-by-default
+      For existing volumes, create an encrypted snapshot and replace the volume.

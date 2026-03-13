@@ -1,0 +1,74 @@
+# IAM Security Rules
+# Per MVP §6: IAM is service #1 of 20 scanned services
+# Per PRD §9: Must use read-only IAM roles
+
+rules:
+  - id: iam-root-access-keys
+    description: "Root account has active access keys"
+    severity: CRITICAL
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H"
+    cis_mapping: "CIS 1.4"
+    mitigation: |
+      Remove root account access keys:
+      1. AWS Console: IAM → Root Account → Security Credentials → Delete Access Keys
+      2. AWS CLI: aws iam delete-access-key --access-key-id <key-id>
+      3. Use IAM users/roles instead of root for all operations
+
+  - id: iam-mfa-disabled
+    description: "IAM user does not have MFA enabled"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N"
+    cis_mapping: "CIS 1.2"
+    mitigation: |
+      Enable MFA for the IAM user:
+      1. AWS Console: IAM → Users → Select User → Security Credentials → Assign MFA
+      2. AWS CLI: aws iam enable-mfa-device --user-name <user> --serial-number <arn> --authentication-code1 <code1> --authentication-code2 <code2>
+
+  - id: iam-wildcard-policy
+    description: "IAM policy allows wildcard (*) actions on all resources"
+    severity: CRITICAL
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:H"
+    cis_mapping: "CIS 1.16"
+    mitigation: |
+      Restrict IAM policy to least-privilege:
+      1. Review the policy and replace Action: "*" with specific actions
+      2. Replace Resource: "*" with specific resource ARNs
+      3. AWS CLI: aws iam put-user-policy --user-name <user> --policy-name <name> --policy-document file://restricted-policy.json
+
+  - id: iam-unused-credentials
+    description: "IAM user has credentials unused for 90+ days"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:N"
+    cis_mapping: "CIS 1.3"
+    mitigation: |
+      Disable or remove unused credentials:
+      1. AWS CLI: aws iam update-access-key --access-key-id <key-id> --status Inactive --user-name <user>
+      2. Or delete: aws iam delete-access-key --access-key-id <key-id> --user-name <user>
+      3. Review and remove unused IAM users
+
+  - id: iam-password-policy-weak
+    description: "Account password policy does not meet security requirements"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:N"
+    cis_mapping: "CIS 1.5-1.11"
+    mitigation: |
+      Update account password policy:
+      aws iam update-account-password-policy \
+        --minimum-password-length 14 \
+        --require-symbols \
+        --require-numbers \
+        --require-uppercase-characters \
+        --require-lowercase-characters \
+        --max-password-age 90 \
+        --password-reuse-prevention 24
+
+  - id: iam-inline-policy
+    description: "IAM user has inline policies attached directly"
+    severity: LOW
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:N/A:N"
+    cis_mapping: "CIS 1.15"
+    mitigation: |
+      Convert inline policies to managed policies:
+      1. Create a managed policy with the same permissions
+      2. Attach managed policy to user/group
+      3. Remove inline policy: aws iam delete-user-policy --user-name <user> --policy-name <name>

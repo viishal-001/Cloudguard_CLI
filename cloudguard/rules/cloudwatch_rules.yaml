@@ -1,0 +1,18 @@
+# CloudWatch Security Rules
+rules:
+  - id: cloudwatch-no-alarm-root
+    description: "No CloudWatch alarm for root account usage"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:H/I:H/A:N"
+    cis_mapping: "CIS 4.3"
+    mitigation: |
+      Create a CloudWatch alarm for root account usage with SNS notification.
+
+  - id: cloudwatch-no-log-group-retention
+    description: "CloudWatch log group has no retention policy"
+    severity: LOW
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:L"
+    cis_mapping: ""
+    mitigation: |
+      Set retention policy:
+      aws logs put-retention-policy --log-group-name <name> --retention-in-days 90

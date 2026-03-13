@@ -1,0 +1,27 @@
+# Lambda Security Rules
+rules:
+  - id: lambda-public-access
+    description: "Lambda function has a resource-based policy allowing public access"
+    severity: HIGH
+    cvss_vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:L/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Remove public access from Lambda resource policy:
+      aws lambda remove-permission --function-name <name> --statement-id <sid>
+
+  - id: lambda-no-dlq
+    description: "Lambda function does not have a dead-letter queue configured"
+    severity: LOW
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:L"
+    cis_mapping: ""
+    mitigation: |
+      Configure a dead-letter queue (SQS or SNS):
+      aws lambda update-function-configuration --function-name <name> --dead-letter-config TargetArn=<arn>
+
+  - id: lambda-runtime-deprecated
+    description: "Lambda function uses a deprecated runtime"
+    severity: MEDIUM
+    cvss_vector: "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:N"
+    cis_mapping: ""
+    mitigation: |
+      Update to a supported runtime version. Review AWS Lambda runtimes page for supported versions.
